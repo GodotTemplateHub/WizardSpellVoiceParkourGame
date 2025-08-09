@@ -19,7 +19,6 @@ spawn_path = NodePath("../Players")
 script = ExtResource("1_gojf1")
 player_scene = ExtResource("2_fehjn")
 spawn_points = [NodePath("../Players/SpawnPoint01"), NodePath("../Players/SpawnPoint02"), NodePath("../Players/SpawnPoint03"), NodePath("../Players/SpawnPoint04")]
-spawn_in_empty = true
 
 [node name="Players" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.90816, 0)
@@ -63,3 +62,5 @@ use_collision = true
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0812728, -0.111755)
 size = Vector3(7, 0.165527, 6.77649)
+
+[node name="GlobalUI" type="CanvasLayer" parent="."]

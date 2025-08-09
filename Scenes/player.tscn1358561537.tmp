@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://tv4ar5fv1s6e"]
+[gd_scene load_steps=14 format=3 uid="uid://tv4ar5fv1s6e"]
 
 [ext_resource type="Script" uid="uid://cr6pnoxxyo6pm" path="res://addons/Basic FPS Player/Src/basic_player_startup.gd" id="1_4m64u"]
 [ext_resource type="Script" uid="uid://bio5h328kx3dw" path="res://Scripts/System/Networking/PlayerSyncManager.gd" id="2_ujs6x"]
@@ -6,14 +6,7 @@
 [ext_resource type="Script" uid="uid://d1grq0ni54n5v" path="res://Scripts/Managers/input_mapping_manager.gd" id="3_fkybt"]
 [ext_resource type="Theme" uid="uid://buayu17segstp" path="res://Assets/UI/Themes/main.tres" id="3_vgqql"]
 [ext_resource type="Script" uid="uid://b5fki5m086vsk" path="res://Scripts/Managers/player_ui_manager.gd" id="4_3smsa"]
-[ext_resource type="Script" uid="uid://bntq81yv7natx" path="res://Scripts/Managers/settings_manager.gd" id="4_gymyn"]
-[ext_resource type="Script" uid="uid://bajle0yxbkatb" path="res://Scripts/button_manager.gd" id="5_f1ek2"]
 [ext_resource type="Script" uid="uid://bcxqsf414bmmr" path="res://Scripts/System/CustomNodes/input_button.gd" id="5_x3wgy"]
-[ext_resource type="StyleBox" uid="uid://cghvv5vqdl3n4" path="res://Assets/UI/Components/Panels/inner_settings_panel.tres" id="6_8erm5"]
-[ext_resource type="AudioStream" uid="uid://b3ek7wfqd3s7e" path="res://Assets/Audio/SFX/btn-press.mp3" id="6_tx1dd"]
-[ext_resource type="Script" uid="uid://fdf858761ain" path="res://Scripts/Managers/proximity_chat_manager.gd" id="7_pu2lt"]
-[ext_resource type="Texture2D" uid="uid://i7e4mmmmj1lt" path="res://Assets/Images/mic-muted.png" id="9_ukyrk"]
-[ext_resource type="Texture2D" uid="uid://da5gle7h6m6kr" path="res://Assets/Images/mic-on.png" id="10_7dp3o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e0fv5"]
 albedo_color = Color(0.266667, 1, 1, 1)
@@ -28,40 +21,11 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pu2lt"]
-bg_color = Color(0.552941, 0.552941, 0.552941, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3smsa"]
-bg_color = Color(0.00286559, 0.10604, 0.114105, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8erm5"]
-bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [sub_resource type="LabelSettings" id="LabelSettings_vgqql"]
 font_size = 32
 
-[sub_resource type="LabelSettings" id="LabelSettings_pu2lt"]
-font_size = 25
-
 [sub_resource type="LabelSettings" id="LabelSettings_6t5aa"]
-font_size = 75
+font_size = 66
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.968627)
 shadow_offset = Vector2(5.645, 4.22)
@@ -106,9 +70,6 @@ shape = SubResource("CylinderShape3D_s2iwt")
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
 layers = 31
 
-[node name="MicInputAudio3D" type="AudioStreamPlayer3D" parent="."]
-bus = &"Voice"
-
 [node name="PlayerSyncManager" type="Node" parent="."]
 script = ExtResource("2_ujs6x")
 
@@ -117,120 +78,17 @@ script = ExtResource("2_ujs6x")
 [node name="InputMappingManager" type="Node" parent="Managers"]
 script = ExtResource("3_fkybt")
 
-[node name="ButtonManager" type="Node" parent="Managers"]
-script = ExtResource("5_f1ek2")
-hover_sound = ExtResource("6_tx1dd")
-press_sound = ExtResource("6_tx1dd")
-metadata/_custom_type_script = "uid://bajle0yxbkatb"
-
-[node name="SettingsManager" type="Node" parent="Managers" node_paths=PackedStringArray("master_slider", "sfx_slider", "music_slider", "microphone_slider", "mute_checkbox", "microphone_dropdown", "push_to_talk_checkbox")]
-script = ExtResource("4_gymyn")
-master_slider = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MasterVolume/HSlider")
-sfx_slider = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/SFXVolume/HSlider")
-music_slider = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MusicVolume/HSlider")
-microphone_slider = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MicVolume/HSlider")
-mute_checkbox = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MuteAudio/Button")
-microphone_dropdown = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/MicSettings/OptionButton")
-push_to_talk_checkbox = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/PushToTalk/CheckBox")
-
-[node name="ProximityChatManager" type="Node" parent="Managers" node_paths=PackedStringArray("audio_player_3d", "settings_manager", "mic_transmitting_icon", "mic_muted_icon")]
-script = ExtResource("7_pu2lt")
-audio_player_3d = NodePath("../../MicInputAudio3D")
-settings_manager = NodePath("../SettingsManager")
-push_to_talk_action = "push_to_talk"
-mic_transmitting_icon = NodePath("../../PlayerUI/MainUI/InputAudioStatus/InputON")
-mic_muted_icon = NodePath("../../PlayerUI/MainUI/InputAudioStatus/InputOFF")
-
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_6yngi")
 
-[node name="PlayerUI" type="CanvasLayer" parent="." node_paths=PackedStringArray("resume_button", "quit_button", "pause_ui")]
+[node name="PlayerUI" type="CanvasLayer" parent="."]
 script = ExtResource("4_3smsa")
-resume_button = NodePath("PauseUI/PausePanel/ButtonVBoxContainer/Resume")
-quit_button = NodePath("PauseUI/PausePanel/ButtonVBoxContainer/Exit")
-pause_ui = NodePath("PauseUI")
 
 [node name="MainUI" type="Control" parent="PlayerUI"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="InputAudioStatus" type="Panel" parent="PlayerUI/MainUI"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -63.0
-offset_right = 65.0
-offset_bottom = -6.0
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_pu2lt")
-
-[node name="InputOFF" type="TextureRect" parent="PlayerUI/MainUI/InputAudioStatus"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -3.0
-offset_right = 8.0
-offset_bottom = 13.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.933363, 0.90644)
-texture = ExtResource("9_ukyrk")
-expand_mode = 1
-
-[node name="ColorRect" type="ColorRect" parent="PlayerUI/MainUI/InputAudioStatus/InputOFF"]
-z_index = -1
-offset_left = 6.0
-offset_top = 4.0
-offset_right = 66.0
-offset_bottom = 65.0
-color = Color(1, 0, 0, 0.65098)
-
-[node name="InputON" type="TextureRect" parent="PlayerUI/MainUI/InputAudioStatus"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -10.0
-offset_top = -5.0
-offset_right = 15.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.933363, 0.90644)
-texture = ExtResource("10_7dp3o")
-expand_mode = 1
-
-[node name="ColorRect" type="ColorRect" parent="PlayerUI/MainUI/InputAudioStatus/InputON"]
-z_index = -1
-layout_mode = 0
-offset_left = 12.0
-offset_top = 7.0
-offset_right = 73.0
-offset_bottom = 67.0
-color = Color(0, 0.937948, 0.00521814, 0.65098)
-
-[node name="Retical" type="ColorRect" parent="PlayerUI/MainUI"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1.5
-offset_top = -1.5
-offset_right = 1.5
-offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -256,7 +114,6 @@ offset_right = 493.5
 offset_bottom = 282.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3smsa")
 
 [node name="SettingsPanel" type="Panel" parent="PlayerUI/PauseUI/PausePanel"]
 layout_mode = 1
@@ -265,13 +122,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -433.5
-offset_top = -186.5
-offset_right = 434.5
-offset_bottom = 180.5
+offset_left = -434.0
+offset_top = -179.5
+offset_right = 434.0
+offset_bottom = 179.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_8erm5")
 
 [node name="AudioSettingsPanel" type="Panel" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel"]
 layout_mode = 2
@@ -279,7 +135,6 @@ offset_left = 28.0
 offset_top = 29.0
 offset_right = 422.0
 offset_bottom = 341.0
-theme_override_styles/panel = ExtResource("6_8erm5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel"]
 layout_mode = 1
@@ -340,19 +195,6 @@ label_settings = SubResource("LabelSettings_vgqql")
 custom_minimum_size = Vector2(193.31, 48.31)
 layout_mode = 2
 
-[node name="MicVolume" type="HBoxContainer" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 27)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MicVolume"]
-layout_mode = 2
-text = "Microphone  Input"
-label_settings = SubResource("LabelSettings_pu2lt")
-
-[node name="HSlider" type="HSlider" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MicVolume"]
-custom_minimum_size = Vector2(193.31, 48.31)
-layout_mode = 2
-
 [node name="MuteAudio" type="HBoxContainer" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
@@ -371,7 +213,6 @@ offset_left = 441.0
 offset_top = 29.5
 offset_right = 835.0
 offset_bottom = 341.5
-theme_override_styles/panel = ExtResource("6_8erm5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings"]
 layout_mode = 1
@@ -414,14 +255,10 @@ layout_mode = 2
 text = "Push To Talk Key"
 label_settings = SubResource("LabelSettings_vgqql")
 
-[node name="RebindButton" type="Button" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/PushToTalkKey" node_paths=PackedStringArray("input_manager")]
-custom_minimum_size = Vector2(130, 0)
+[node name="RebindButton" type="Button" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/PushToTalkKey"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
-autowrap_mode = 3
 script = ExtResource("5_x3wgy")
 action_name = "push_to_talk"
-input_manager = NodePath("../../../../../../../../Managers/InputMappingManager")
 metadata/_custom_type_script = "uid://bcxqsf414bmmr"
 
 [node name="MicSettings" type="HBoxContainer" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer"]
@@ -433,17 +270,11 @@ layout_mode = 2
 text = "Microphone"
 label_settings = SubResource("LabelSettings_vgqql")
 
-[node name="OptionButton" type="OptionButton" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/MicSettings"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-autowrap_mode = 3
-
 [node name="Label" type="Label" parent="PlayerUI/PauseUI/PausePanel"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 104.0
+offset_bottom = 70.0
 grow_horizontal = 2
 text = "Settings"
 label_settings = SubResource("LabelSettings_6t5aa")

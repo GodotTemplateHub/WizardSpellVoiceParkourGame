@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://cv44tvj0o5jcf"]
+[gd_scene load_steps=13 format=3 uid="uid://cv44tvj0o5jcf"]
 
+[ext_resource type="Script" uid="uid://bajle0yxbkatb" path="res://Scripts/button_manager.gd" id="1_0fj1v"]
 [ext_resource type="Script" uid="uid://ba22463vxe7am" path="res://Scripts/System/Managers/SteamManager.gd" id="1_b1cy8"]
 [ext_resource type="Script" uid="uid://bnjcjurcia754" path="res://Scripts/System/Managers/LobbyManager.gd" id="2_tpclr"]
 [ext_resource type="Script" uid="uid://b5rnxougwr1ld" path="res://Scripts/System/Networking/NetworkManager.gd" id="3_hsc1b"]
@@ -8,11 +9,30 @@
 [ext_resource type="PackedScene" uid="uid://b7pp3skomvnhc" path="res://Scenes/level.tscn" id="6_1scc6"]
 [ext_resource type="Theme" uid="uid://c4f2loxebxryi" path="res://Assets/Theme/main.tres" id="7_gin60"]
 [ext_resource type="Script" uid="uid://7dxfof7x5uj7" path="res://Scenes/check_box.gd" id="8_pctin"]
+[ext_resource type="Shader" uid="uid://bekwrrf6qk8l3" path="res://Assets/Shaders/retro_pixel.gdshader" id="9_5v1tr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nfy72"]
 font_size = 25
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0fj1v"]
+shader = ExtResource("9_5v1tr")
+shader_parameter/shake = 0.001
+shader_parameter/noiseQuality = 250.0
+shader_parameter/noiseIntensity = 0.001
+shader_parameter/offsetIntensity = 0.0
+shader_parameter/colorOffsetIntensity = 0.2
+shader_parameter/pixelSize = 800.0
+shader_parameter/grainIntensity = 0.04
+shader_parameter/use_overlay = true
+shader_parameter/use_lens_distortion = true
+shader_parameter/overlay_color = Color(1, 1, 1, 10)
+shader_parameter/lens_distortion_strength = 0.0
+
 [node name="World" type="Node3D"]
+
+[node name="ButtonManager" type="Node" parent="."]
+script = ExtResource("1_0fj1v")
+metadata/_custom_type_script = "uid://bajle0yxbkatb"
 
 [node name="SteamManager" type="Node" parent="."]
 script = ExtResource("1_b1cy8")
@@ -386,6 +406,25 @@ script = ExtResource("8_pctin")
 visible = false
 layout_mode = 2
 placeholder_text = "Password"
+
+[node name="ShaderUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CRTShader" type="ColorRect" parent="CanvasLayer/ShaderUI"]
+material = SubResource("ShaderMaterial_0fj1v")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="MapContainer" type="Node" parent="."]
 
