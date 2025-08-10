@@ -1,6 +1,7 @@
 extends MultiplayerSpawner
 
 @export var player_scene: PackedScene
+@export var game_manager : GameManager
 @export_category("Configurations")
 @export var spawn_points: Array[Node3D]
 ## This is for spawning that only happens once, if a player spawns in that location, no one else can spawn there.
@@ -32,12 +33,13 @@ func spawn_player(data):
 				break			
 	
 	player.global_position = spawn_position
-	
+	game_manager.players.append(player)
 	return player
 
 func remove_player(data):
 	
 	# Remove player
 	if data in players:
+		game_manager.players.erase(players[data])
 		players[data].queue_free()
 		players.erase(data)

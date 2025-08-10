@@ -1,8 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://b7pp3skomvnhc"]
+[gd_scene load_steps=18 format=3 uid="uid://b7pp3skomvnhc"]
 
 [ext_resource type="Script" uid="uid://dgc18acbwmq5r" path="res://Scripts/System/Networking/PlayerSpawner.gd" id="1_gojf1"]
 [ext_resource type="PackedScene" uid="uid://tv4ar5fv1s6e" path="res://Scenes/player.tscn" id="2_fehjn"]
 [ext_resource type="PackedScene" uid="uid://d3mqoqtwjal42" path="res://Scenes/Interactions/base_interaction.tscn" id="3_6phgx"]
+[ext_resource type="Script" uid="uid://cbd0y0kx8fog3" path="res://Scripts/arena_manager.gd" id="4_81xng"]
+[ext_resource type="Script" uid="uid://k2gcykkt85jg" path="res://Scripts/Managers/game_manager.gd" id="4_wqkje"]
+[ext_resource type="Script" uid="uid://juapy8e60yaw" path="res://Scripts/Managers/global_game_ui_manager.gd" id="5_0f350"]
+[ext_resource type="FontFile" uid="uid://cd2oroja8to8p" path="res://Assets/UI/Fonts/Dead Font Walking.otf" id="6_8c0lf"]
+[ext_resource type="FontFile" uid="uid://cilkvwb1gxv4u" path="res://Assets/Theme/Fonts/Hermit-Regular.otf" id="6_754fn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6phgx"]
 
@@ -21,8 +26,35 @@ transparency = 1
 vertex_color_use_as_albedo = true
 albedo_color = Color(0, 1, 1, 0.301961)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8c0lf"]
+bg_color = Color(0.0196078, 0.0156863, 0.0117647, 0.486275)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_8c0lf"]
+font = ExtResource("6_754fn")
+font_size = 30
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wqkje"]
+font = ExtResource("6_8c0lf")
+font_size = 41
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.909804)
+shadow_offset = Vector2(1, 10.255)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_0f350"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_6phgx"]
-size = Vector3(11.2719, 6.34934, 6.565)
+size = Vector3(18.93, 4.46497, 20.285)
 
 [node name="Level" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09753, 0)
@@ -33,10 +65,11 @@ environment = SubResource("Environment_6phgx")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.628194, 0.778057, 0, -0.778057, 0.628194, 0, 0, 0)
 
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("spawn_points")]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("game_manager", "spawn_points")]
 spawn_path = NodePath("../Players")
 script = ExtResource("1_gojf1")
 player_scene = ExtResource("2_fehjn")
+game_manager = NodePath("../GameManager")
 spawn_points = [NodePath("../Players/SpawnPoint01"), NodePath("../Players/SpawnPoint02"), NodePath("../Players/SpawnPoint03"), NodePath("../Players/SpawnPoint04")]
 
 [node name="Players" type="Node3D" parent="."]
@@ -79,8 +112,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0229278, 1.11218, 0.016443
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0812728, -0.111755)
-size = Vector3(20, 0.166, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.65784, -0.0812728, -0.111755)
+size = Vector3(39.3157, 0.166, 20)
 
 [node name="GlobalUI" type="CanvasLayer" parent="."]
 
@@ -93,15 +126,88 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, -1.14177)
 [node name="BaseInteraction3" parent="." instance=ExtResource("3_6phgx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, 1.41759)
 
-[node name="Climbable" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.92818, 1.60978, 0)
+[node name="Map" type="CSGCombiner3D" parent="."]
 
-[node name="Climbable" type="Node" parent="Climbable"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0875, -10.4688)
+size = Vector3(21.17, 4.2251, 1)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Climbable"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50248, 2.66673, 0)
-size = Vector3(11.29, 6.44066, 6.575)
+[node name="CSGBox3D2" type="CSGBox3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0875, 10.0066)
+size = Vector3(21.17, 4.2251, 1)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Climbable"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.49345, 2.71098, 0)
+[node name="CSGBox3D3" type="CSGBox3D" parent="Map"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10.5023, 3.0875, -0.256586)
+size = Vector3(21.17, 4.2251, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Map"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -10.1906, 3.0875, -6.54133)
+size = Vector3(8.6005, 4.2251, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Map"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -10.1906, 3.0875, 6.1466)
+size = Vector3(8.6005, 4.2251, 1)
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("arena_manager")]
+script = ExtResource("4_wqkje")
+arena_manager = NodePath("../Arena/ArenaManager")
+levelup_duration = 10.0
+arena_duration = 10.0
+phase_system_enabled = false
+
+[node name="GlobalGameUI" type="CanvasLayer" parent="GameManager"]
+
+[node name="GlobalGameUIManager" type="Node" parent="GameManager/GlobalGameUI" node_paths=PackedStringArray("state_label", "timer_label", "game_manager")]
+script = ExtResource("5_0f350")
+state_label = NodePath("../Panel/CurrentPhase")
+timer_label = NodePath("../Panel/Timer")
+game_manager = NodePath("../..")
+
+[node name="Panel" type="Panel" parent="GameManager/GlobalGameUI"]
+offset_left = 442.0
+offset_right = 712.0
+offset_bottom = 64.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8c0lf")
+
+[node name="CurrentPhase" type="Label" parent="GameManager/GlobalGameUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 64.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "pre-lobby"
+label_settings = SubResource("LabelSettings_8c0lf")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Label" parent="GameManager/GlobalGameUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "00:00:00"
+label_settings = SubResource("LabelSettings_wqkje")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="GameManager/GlobalGameUI"]
+root_path = NodePath("../../..")
+replication_config = SubResource("SceneReplicationConfig_0f350")
+
+[node name="Arena" type="Node3D" parent="."]
+
+[node name="ArenaManager" type="Node" parent="Arena"]
+script = ExtResource("4_81xng")
+
+[node name="Area3D" type="Area3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9089, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.238268, 3.26752, 0)
 shape = SubResource("BoxShape3D_6phgx")
+debug_color = Color(1, 0.224294, 0.77089, 0.42)

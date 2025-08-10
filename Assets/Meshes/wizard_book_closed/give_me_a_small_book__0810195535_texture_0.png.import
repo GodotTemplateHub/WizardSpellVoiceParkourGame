@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://big8n61yv5vjv"
+path.s3tc="res://.godot/imported/give_me_a_small_book__0810195535_texture_0.png-f79fa390c24f797ccf713860082de570.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "37f32dc97b3d2d84bf3e6e3c614ea55a"
+}
+
+[deps]
+
+source_file="res://Assets/Meshes/wizard_book_closed/give_me_a_small_book__0810195535_texture_0.png"
+dest_files=["res://.godot/imported/give_me_a_small_book__0810195535_texture_0.png-f79fa390c24f797ccf713860082de570.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0
