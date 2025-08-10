@@ -3,18 +3,13 @@ class_name PlayerUIManager
 
 @export var resume_button: Button
 @export var quit_button: Button
-
 @export var pause_ui : Control
 
 var is_paused: bool = false
 
 func _ready() -> void:
-	# Connect buttons
-	if resume_button:
-		resume_button.pressed.connect(_on_resume_pressed)
-	if quit_button:
-		quit_button.pressed.connect(_on_quit_pressed)
-		
+	if resume_button: resume_button.pressed.connect(_on_resume_pressed)
+	if quit_button: quit_button.pressed.connect(_on_quit_pressed)
 	pause_ui.hide()
 
 func _input(event: InputEvent) -> void:
@@ -30,10 +25,12 @@ func toggle_pause() -> void:
 func pause() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	pause_ui.show()
+	is_paused = true
 
 func unpause() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	pause_ui.hide()
+	is_paused = false
 
 func _on_resume_pressed() -> void:
 	unpause()

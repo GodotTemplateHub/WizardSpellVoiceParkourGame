@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b7pp3skomvnhc"]
+[gd_scene load_steps=5 format=3 uid="uid://b7pp3skomvnhc"]
 
 [ext_resource type="Script" uid="uid://dgc18acbwmq5r" path="res://Scripts/System/Networking/PlayerSpawner.gd" id="1_gojf1"]
 [ext_resource type="PackedScene" uid="uid://tv4ar5fv1s6e" path="res://Scenes/player.tscn" id="2_fehjn"]
+[ext_resource type="PackedScene" uid="uid://d3mqoqtwjal42" path="res://Scenes/Interactions/base_interaction.tscn" id="3_6phgx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_okv1i"]
 transparency = 1
@@ -21,7 +22,7 @@ player_scene = ExtResource("2_fehjn")
 spawn_points = [NodePath("../Players/SpawnPoint01"), NodePath("../Players/SpawnPoint02"), NodePath("../Players/SpawnPoint03"), NodePath("../Players/SpawnPoint04")]
 
 [node name="Players" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.90816, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.75646, 0)
 
 [node name="SpawnPoint01" type="Node3D" parent="Players"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.46775, 1.53141, -2.10603)
@@ -61,6 +62,15 @@ use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0812728, -0.111755)
-size = Vector3(7, 0.165527, 6.77649)
+size = Vector3(20, 0.166, 20)
 
 [node name="GlobalUI" type="CanvasLayer" parent="."]
+
+[node name="BaseInteraction" parent="." instance=ExtResource("3_6phgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, -3.32939)
+
+[node name="BaseInteraction2" parent="." instance=ExtResource("3_6phgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, -1.14177)
+
+[node name="BaseInteraction3" parent="." instance=ExtResource("3_6phgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, 1.41759)

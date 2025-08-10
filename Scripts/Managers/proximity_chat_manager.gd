@@ -7,6 +7,7 @@ class_name ProximityChatManager
 @export var push_to_talk_action: String = "voice_chat"
 @export var mic_transmitting_icon: Control
 @export var mic_muted_icon: Control
+@export var mic_signal_sprite: Sprite3D
 
 var is_transmitting: bool = false
 var push_to_talk_held: bool = false
@@ -88,21 +89,17 @@ func _update_voice_transmission() -> void:
 		stop_voice_transmission()
 
 func start_voice_transmission() -> void:
-	if not audio_player_3d:
-		return
-	
 	is_transmitting = true
 	audio_player_3d.play()
 	_update_mic_icons()
+	rpc("show_mic_output_sprite")
 	print("Voice transmission started")
 
 func stop_voice_transmission() -> void:
-	if not audio_player_3d:
-		return
-	
 	is_transmitting = false
 	audio_player_3d.stop()
 	_update_mic_icons()
+	rpc("hide_mic_output_sprite")
 	print("Voice transmission stopped")
 
 func _update_mic_icons() -> void:
@@ -111,3 +108,11 @@ func _update_mic_icons() -> void:
 	
 	if mic_muted_icon:
 		mic_muted_icon.visible = not is_transmitting
+
+@rpc("call_remote")
+func show_mic_output_sprite():
+	mic_signal_sprite.show()
+
+@rpc("call_remote")
+func hide_mic_output_sprite():
+	mic_signal_sprite.hide()

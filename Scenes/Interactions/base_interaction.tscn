@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3mqoqtwjal42"]
+
+[ext_resource type="Script" uid="uid://cxwlmwfxjagc5" path="res://Scripts/System/interaction.gd" id="1_otsbj"]
+[ext_resource type="Shader" uid="uid://d14ivy1af1heq" path="res://Assets/Shaders/obj_outline.gdshader" id="2_atqaf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wqkje"]
+render_priority = 0
+shader = ExtResource("2_atqaf")
+shader_parameter/normal_threshold = 0.1
+shader_parameter/depth_threshold = 0.05
+shader_parameter/depth_artifact_correction_coef = 2.0
+shader_parameter/outline_color = Color(0.819608, 0.815686, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6phgx"]
+
+[node name="BaseInteraction" type="StaticBody3D"]
+
+[node name="Interaction" type="Node" parent="." node_paths=PackedStringArray("outline")]
+script = ExtResource("1_otsbj")
+debug_mode = true
+outline = NodePath("../InteractionObject/Outline")
+
+[node name="InteractionObject" type="Node3D" parent="."]
+
+[node name="Outline" type="CSGBox3D" parent="InteractionObject"]
+transform = Transform3D(1.00439, 0, 0, 0, 1.00439, 0, 0, 0, 1.00439, 0, 0, 0)
+visible = false
+material = SubResource("ShaderMaterial_wqkje")
+
+[node name="InteractionObject" type="CSGBox3D" parent="InteractionObject"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_6phgx")

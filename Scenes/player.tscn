@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://tv4ar5fv1s6e"]
+[gd_scene load_steps=28 format=3 uid="uid://tv4ar5fv1s6e"]
 
 [ext_resource type="Script" uid="uid://cr6pnoxxyo6pm" path="res://addons/Basic FPS Player/Src/basic_player_startup.gd" id="1_4m64u"]
 [ext_resource type="Script" uid="uid://bio5h328kx3dw" path="res://Scripts/System/Networking/PlayerSyncManager.gd" id="2_ujs6x"]
@@ -12,11 +12,16 @@
 [ext_resource type="StyleBox" uid="uid://cghvv5vqdl3n4" path="res://Assets/UI/Components/Panels/inner_settings_panel.tres" id="6_8erm5"]
 [ext_resource type="AudioStream" uid="uid://b3ek7wfqd3s7e" path="res://Assets/Audio/SFX/btn-press.mp3" id="6_tx1dd"]
 [ext_resource type="Script" uid="uid://fdf858761ain" path="res://Scripts/Managers/proximity_chat_manager.gd" id="7_pu2lt"]
+[ext_resource type="Script" uid="uid://3842xh0avrht" path="res://Scripts/Managers/interaction_manager.gd" id="8_fd4e3"]
 [ext_resource type="Texture2D" uid="uid://i7e4mmmmj1lt" path="res://Assets/Images/mic-muted.png" id="9_ukyrk"]
 [ext_resource type="Texture2D" uid="uid://da5gle7h6m6kr" path="res://Assets/Images/mic-on.png" id="10_7dp3o"]
+[ext_resource type="Texture2D" uid="uid://bxy5fh1d85pc5" path="res://Assets/Images/volume-icon.png" id="15_h4iuc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e0fv5"]
 albedo_color = Color(0.266667, 1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fd4e3"]
+size = Vector3(0.1, 0.1, 2)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_s2iwt"]
 
@@ -37,14 +42,14 @@ border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3smsa"]
-bg_color = Color(0.00286559, 0.10604, 0.114105, 1)
+bg_color = Color(0, 0, 0, 0.478431)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8erm5"]
-bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -100,6 +105,13 @@ layers = 31
 size = Vector3(0.883, 0.265, 0.576)
 material = SubResource("StandardMaterial3D_e0fv5")
 
+[node name="Area3D" type="Area3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.538918)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Head/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0856296, -0.548584)
+shape = SubResource("BoxShape3D_fd4e3")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_s2iwt")
 
@@ -107,6 +119,7 @@ shape = SubResource("CylinderShape3D_s2iwt")
 layers = 31
 
 [node name="MicInputAudio3D" type="AudioStreamPlayer3D" parent="."]
+max_distance = 2000.0
 bus = &"Voice"
 
 [node name="PlayerSyncManager" type="Node" parent="."]
@@ -133,13 +146,17 @@ mute_checkbox = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioS
 microphone_dropdown = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/MicSettings/OptionButton")
 push_to_talk_checkbox = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/PushToTalk/CheckBox")
 
-[node name="ProximityChatManager" type="Node" parent="Managers" node_paths=PackedStringArray("audio_player_3d", "settings_manager", "mic_transmitting_icon", "mic_muted_icon")]
+[node name="ProximityChatManager" type="Node" parent="Managers" node_paths=PackedStringArray("audio_player_3d", "settings_manager", "mic_transmitting_icon", "mic_muted_icon", "mic_signal_sprite")]
 script = ExtResource("7_pu2lt")
 audio_player_3d = NodePath("../../MicInputAudio3D")
 settings_manager = NodePath("../SettingsManager")
 push_to_talk_action = "push_to_talk"
 mic_transmitting_icon = NodePath("../../PlayerUI/MainUI/InputAudioStatus/InputON")
 mic_muted_icon = NodePath("../../PlayerUI/MainUI/InputAudioStatus/InputOFF")
+mic_signal_sprite = NodePath("../../MicOutputSignal")
+
+[node name="InteractionManager" type="Node" parent="Managers"]
+script = ExtResource("8_fd4e3")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_6yngi")
@@ -189,6 +206,7 @@ expand_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="PlayerUI/MainUI/InputAudioStatus/InputOFF"]
 z_index = -1
+layout_mode = 0
 offset_left = 6.0
 offset_top = 4.0
 offset_right = 66.0
@@ -489,3 +507,14 @@ offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="MicOutputSignal" type="Sprite3D" parent="."]
+transform = Transform3D(0.108775, 0, 0, 0, 0.108775, 0, 0, 0, 0.108775, 0, 1.62176, 0)
+visible = false
+billboard = 1
+texture = ExtResource("15_h4iuc")
+region_enabled = true
+region_rect = Rect2(0, 0, 1024, 1024)
+
+[connection signal="body_entered" from="Head/Area3D" to="Managers/InteractionManager" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Head/Area3D" to="Managers/InteractionManager" method="_on_area_3d_body_exited"]

@@ -26,25 +26,17 @@ var reduce_volume: float = 30
 var save_path: String = "user://settings.json"
 
 ## Audio bus names
-var master_bus: String = "Master"
-var sfx_bus: String = "SFX"
-var music_bus: String = "Music"
-var microphone_bus: String = "Voice"
+var master_bus	: String = "Master"
+var sfx_bus		: String = "SFX"
+var music_bus	: String = "Music"
+var microphone_bus : String = "Voice"
 
 func _ready() -> void:
-	# Setup microphone dropdown
 	_populate_microphone_dropdown()
-	
-	# Connect UI signals
 	_connect_ui_signals()
-	
-	# Load settings or apply defaults
 	load_settings()
 
 func _populate_microphone_dropdown() -> void:
-	if not microphone_dropdown:
-		return
-	
 	# Store current selection
 	var current_selection: int = microphone_dropdown.selected
 	var current_text: String = ""
