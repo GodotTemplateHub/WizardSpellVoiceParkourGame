@@ -1,12 +1,14 @@
-[gd_scene load_steps=28 format=3 uid="uid://tv4ar5fv1s6e"]
+[gd_scene load_steps=32 format=3 uid="uid://tv4ar5fv1s6e"]
 
 [ext_resource type="Script" uid="uid://cr6pnoxxyo6pm" path="res://addons/Basic FPS Player/Src/basic_player_startup.gd" id="1_4m64u"]
 [ext_resource type="Script" uid="uid://bio5h328kx3dw" path="res://Scripts/System/Networking/PlayerSyncManager.gd" id="2_ujs6x"]
 [ext_resource type="Shader" uid="uid://bekwrrf6qk8l3" path="res://Assets/Shaders/retro_pixel.gdshader" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://d1grq0ni54n5v" path="res://Scripts/Managers/input_mapping_manager.gd" id="3_fkybt"]
+[ext_resource type="Script" uid="uid://bjd7sctbfigmd" path="res://Scripts/Managers/climbing_manager.gd" id="3_igrcy"]
 [ext_resource type="Theme" uid="uid://buayu17segstp" path="res://Assets/UI/Themes/main.tres" id="3_vgqql"]
 [ext_resource type="Script" uid="uid://b5fki5m086vsk" path="res://Scripts/Managers/player_ui_manager.gd" id="4_3smsa"]
 [ext_resource type="Script" uid="uid://bntq81yv7natx" path="res://Scripts/Managers/settings_manager.gd" id="4_gymyn"]
+[ext_resource type="Script" uid="uid://b88f4c0creys6" path="res://Scripts/Managers/stats_manager.gd" id="4_qqcod"]
 [ext_resource type="Script" uid="uid://bajle0yxbkatb" path="res://Scripts/button_manager.gd" id="5_f1ek2"]
 [ext_resource type="Script" uid="uid://bcxqsf414bmmr" path="res://Scripts/System/CustomNodes/input_button.gd" id="5_x3wgy"]
 [ext_resource type="StyleBox" uid="uid://cghvv5vqdl3n4" path="res://Assets/UI/Components/Panels/inner_settings_panel.tres" id="6_8erm5"]
@@ -40,6 +42,12 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqcod"]
+bg_color = Color(0.159489, 0.136685, 0.0382582, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_igrcy"]
+bg_color = Color(0.724919, 0.578487, 0.0698469, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3smsa"]
 bg_color = Color(0, 0, 0, 0.478431)
@@ -125,18 +133,31 @@ bus = &"Voice"
 [node name="PlayerSyncManager" type="Node" parent="."]
 script = ExtResource("2_ujs6x")
 
-[node name="Managers" type="Node" parent="."]
+[node name="PlayerManagers" type="Node" parent="."]
 
-[node name="InputMappingManager" type="Node" parent="Managers"]
+[node name="ClimbingManager" type="Node" parent="PlayerManagers" node_paths=PackedStringArray("player")]
+script = ExtResource("3_igrcy")
+player = NodePath("../..")
+
+[node name="InteractionManager" type="Node" parent="PlayerManagers"]
+script = ExtResource("8_fd4e3")
+
+[node name="StatsManager" type="Node" parent="PlayerManagers" node_paths=PackedStringArray("stamina_progress_bar")]
+script = ExtResource("4_qqcod")
+stamina_progress_bar = NodePath("../../PlayerUI/MainUI/StatsPanel/VBoxContainer/StaminaProgressBar")
+
+[node name="SystemManagers" type="Node" parent="."]
+
+[node name="InputMappingManager" type="Node" parent="SystemManagers"]
 script = ExtResource("3_fkybt")
 
-[node name="ButtonManager" type="Node" parent="Managers"]
+[node name="ButtonManager" type="Node" parent="SystemManagers"]
 script = ExtResource("5_f1ek2")
 hover_sound = ExtResource("6_tx1dd")
 press_sound = ExtResource("6_tx1dd")
 metadata/_custom_type_script = "uid://bajle0yxbkatb"
 
-[node name="SettingsManager" type="Node" parent="Managers" node_paths=PackedStringArray("master_slider", "sfx_slider", "music_slider", "microphone_slider", "mute_checkbox", "microphone_dropdown", "push_to_talk_checkbox")]
+[node name="SettingsManager" type="Node" parent="SystemManagers" node_paths=PackedStringArray("master_slider", "sfx_slider", "music_slider", "microphone_slider", "mute_checkbox", "microphone_dropdown", "push_to_talk_checkbox")]
 script = ExtResource("4_gymyn")
 master_slider = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/MasterVolume/HSlider")
 sfx_slider = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioSettingsPanel/VBoxContainer/SFXVolume/HSlider")
@@ -146,7 +167,7 @@ mute_checkbox = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/AudioS
 microphone_dropdown = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/MicSettings/OptionButton")
 push_to_talk_checkbox = NodePath("../../PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer/PushToTalk/CheckBox")
 
-[node name="ProximityChatManager" type="Node" parent="Managers" node_paths=PackedStringArray("audio_player_3d", "settings_manager", "mic_transmitting_icon", "mic_muted_icon", "mic_signal_sprite")]
+[node name="ProximityChatManager" type="Node" parent="SystemManagers" node_paths=PackedStringArray("audio_player_3d", "settings_manager", "mic_transmitting_icon", "mic_muted_icon", "mic_signal_sprite")]
 script = ExtResource("7_pu2lt")
 audio_player_3d = NodePath("../../MicInputAudio3D")
 settings_manager = NodePath("../SettingsManager")
@@ -154,9 +175,6 @@ push_to_talk_action = "push_to_talk"
 mic_transmitting_icon = NodePath("../../PlayerUI/MainUI/InputAudioStatus/InputON")
 mic_muted_icon = NodePath("../../PlayerUI/MainUI/InputAudioStatus/InputOFF")
 mic_signal_sprite = NodePath("../../MicOutputSignal")
-
-[node name="InteractionManager" type="Node" parent="Managers"]
-script = ExtResource("8_fd4e3")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_6yngi")
@@ -181,10 +199,10 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -63.0
-offset_right = 65.0
-offset_bottom = -6.0
+offset_left = 11.0
+offset_top = -160.0
+offset_right = 70.0
+offset_bottom = -103.0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pu2lt")
 
@@ -252,7 +270,34 @@ offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="StatsPanel" type="Panel" parent="PlayerUI/MainUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 550.0
+offset_right = -728.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/MainUI/StatsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="StaminaProgressBar" type="ProgressBar" parent="PlayerUI/MainUI/StatsPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_qqcod")
+theme_override_styles/fill = SubResource("StyleBoxFlat_igrcy")
+
 [node name="PauseUI" type="Control" parent="PlayerUI"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -439,7 +484,7 @@ theme_override_font_sizes/font_size = 15
 autowrap_mode = 3
 script = ExtResource("5_x3wgy")
 action_name = "push_to_talk"
-input_manager = NodePath("../../../../../../../../Managers/InputMappingManager")
+input_manager = NodePath("../../../../../../../../SystemManagers/InputMappingManager")
 metadata/_custom_type_script = "uid://bcxqsf414bmmr"
 
 [node name="MicSettings" type="HBoxContainer" parent="PlayerUI/PauseUI/PausePanel/SettingsPanel/VoiceSettings/VBoxContainer"]
@@ -516,5 +561,5 @@ texture = ExtResource("15_h4iuc")
 region_enabled = true
 region_rect = Rect2(0, 0, 1024, 1024)
 
-[connection signal="body_entered" from="Head/Area3D" to="Managers/InteractionManager" method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Head/Area3D" to="Managers/InteractionManager" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="Head/Area3D" to="PlayerManagers/InteractionManager" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Head/Area3D" to="PlayerManagers/InteractionManager" method="_on_area_3d_body_exited"]

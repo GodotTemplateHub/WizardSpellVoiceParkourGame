@@ -1,16 +1,34 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7pp3skomvnhc"]
+[gd_scene load_steps=9 format=3 uid="uid://b7pp3skomvnhc"]
 
 [ext_resource type="Script" uid="uid://dgc18acbwmq5r" path="res://Scripts/System/Networking/PlayerSpawner.gd" id="1_gojf1"]
 [ext_resource type="PackedScene" uid="uid://tv4ar5fv1s6e" path="res://Scenes/player.tscn" id="2_fehjn"]
 [ext_resource type="PackedScene" uid="uid://d3mqoqtwjal42" path="res://Scenes/Interactions/base_interaction.tscn" id="3_6phgx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6phgx"]
+
+[sub_resource type="Sky" id="Sky_81xng"]
+sky_material = SubResource("ProceduralSkyMaterial_6phgx")
+
+[sub_resource type="Environment" id="Environment_6phgx"]
+background_mode = 2
+sky = SubResource("Sky_81xng")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_okv1i"]
 transparency = 1
 vertex_color_use_as_albedo = true
 albedo_color = Color(0, 1, 1, 0.301961)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6phgx"]
+size = Vector3(11.2719, 6.34934, 6.565)
+
 [node name="Level" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09753, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6phgx")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.628194, 0.778057, 0, -0.778057, 0.628194, 0, 0, 0)
@@ -74,3 +92,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, -1.14177)
 
 [node name="BaseInteraction3" parent="." instance=ExtResource("3_6phgx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, 1.41759)
+
+[node name="Climbable" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.92818, 1.60978, 0)
+
+[node name="Climbable" type="Node" parent="Climbable"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Climbable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50248, 2.66673, 0)
+size = Vector3(11.29, 6.44066, 6.575)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Climbable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.49345, 2.71098, 0)
+shape = SubResource("BoxShape3D_6phgx")
