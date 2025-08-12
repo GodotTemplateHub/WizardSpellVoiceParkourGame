@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba12t3mmyqmen"]
+
+[ext_resource type="Script" uid="uid://d2jgcbjv5eadv" path="res://Scripts/System/spectator_camera.gd" id="1_w1c3h"]
+
+[node name="SpectatorCamera" type="Camera3D"]
+script = ExtResource("1_w1c3h")
+movement_speed = null
+boost_speed_multiplier = null
+mouse_sensitivity = null

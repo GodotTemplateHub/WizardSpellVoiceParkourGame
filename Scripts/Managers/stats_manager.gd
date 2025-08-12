@@ -16,13 +16,21 @@ var current_xp: float = 50
 var max_xp: float = 100
 var current_level: int = 1
 
-signal died(spell_entity_died_by : Spell)
+signal died(spell_entity_died_by : Dictionary)
 signal health_changed(current: float, max: float)
 signal mana_changed(current: float, max: float)
 signal xp_changed(current: float, max: int)
 signal level_up(new_level: int)
 
-var latest_spell_damaged_by : Spell = null
+var latest_spell_damaged_by : Dictionary = {}
+
+enum EntityState {
+	ALIVE,
+	SPECTATING,
+	DEAD
+}
+
+var current_entity_state : EntityState
 
 func _ready():
 	current_health = max_health
@@ -45,14 +53,15 @@ func level_up_entity():
 	level_up.emit(current_level)
 	xp_changed.emit(current_xp, max_xp)
 
-func take_damage(damage: float, spell : Spell):
-	latest_spell_damaged_by = spell
+@rpc("call_local", "authority")
+func take_damage(damage: float, spell_data: Dictionary):
+	latest_spell_damaged_by = spell_data
 	current_health -= damage
 	if current_health <= 0:
 		current_health = 0
 		die()
+	print(get_parent().name + " Now Has " + str(current_health) + "/" + str(max_health))
 	health_changed.emit(current_health, max_health)
-	
 
 func die():
 	died.emit(latest_spell_damaged_by)

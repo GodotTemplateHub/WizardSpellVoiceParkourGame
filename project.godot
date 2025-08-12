@@ -23,6 +23,7 @@ driver/enable_input=true
 [autoload]
 
 SoundLibrary="*res://Scripts/GLOBALS/SoundLibrary.gd"
+Console="*res://addons/console/console.gd"
 
 [debug]
 
@@ -34,7 +35,7 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Basic FPS Player/plugin.cfg", "res://addons/UniParticles3D/plugin.cfg")
+enabled=PackedStringArray("res://addons/Basic FPS Player/plugin.cfg", "res://addons/UniParticles3D/plugin.cfg", "res://addons/console/plugin.cfg")
 
 [file_customization]
 

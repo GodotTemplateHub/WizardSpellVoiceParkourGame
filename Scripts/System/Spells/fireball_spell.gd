@@ -36,7 +36,7 @@ func _on_projectile_hit(target, projectile):
 	
 	if stats_manager and stats_manager is EntityStatsManager:
 		# Deal damage to entity
-		stats_manager.take_damage(damage, self)
+		stats_manager.rpc("take_damage", damage, get_spell_data())
 		
 		print("Fireball hit " + str(target.name) + " for " + str(damage) + " damage")
 	else:

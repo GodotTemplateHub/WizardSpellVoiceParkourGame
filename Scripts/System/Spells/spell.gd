@@ -157,5 +157,22 @@ func get_caster():
 	# Return the player who owns this spell (parent of SpellManager)
 	var spell_manager = get_parent()
 	if spell_manager and spell_manager is SpellManager:
-		return spell_manager.get_parent().get_parent()
+		return spell_manager.get_parent()
 	return null
+
+# Serialization methods for network compatibility
+func get_spell_data() -> Dictionary:
+	return {
+		"spell_name": spell_name,
+		"description": description,
+		"target_type": target_type,
+		"spell_type": spell_type,
+		"cast_type": cast_type,
+		"mana_cost": mana_cost,
+		"cooldown_time": cooldown_time,
+		"hold_spell_time": hold_spell_time,
+		"spell_level": spell_level,
+		"current_spell_xp": current_spell_xp,
+		"max_spell_xp": max_spell_xp,
+		"caster" : get_caster()
+	}

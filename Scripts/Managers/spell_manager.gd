@@ -14,6 +14,7 @@ func _ready():
 	update_spells_cache()
 
 func _input(event):
+	if !is_multiplayer_authority(): return
 	if event.is_pressed():
 		if spells.size() > 0:
 			# Handle fire input

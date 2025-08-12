@@ -1,7 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://btk5a804aldun"]
+[gd_scene load_steps=9 format=3 uid="uid://btk5a804aldun"]
 
 [ext_resource type="Script" uid="uid://b88f4c0creys6" path="res://Scripts/Managers/stats_manager.gd" id="1_rja1r"]
 [ext_resource type="Script" uid="uid://dcjmglx667i2" path="res://Scripts/System/Entity/entity_give_xp_to_killer.gd" id="2_8bp4v"]
+[ext_resource type="Script" uid="uid://c1ku7g5chg0bj" path="res://Scripts/System/Entity/entity_death.gd" id="2_hr5iw"]
+[ext_resource type="PackedScene" uid="uid://bseei3rwe2og6" path="res://Scenes/Entities/entity_health_bar.tscn" id="3_8bp4v"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8bp4v"]
+viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oqgf2"]
 albedo_color = Color(0.727895, 0.976407, 0.478035, 1)
@@ -25,9 +30,24 @@ speed = 1.0
 base_damage = 1.0
 metadata/_custom_type_script = "uid://b88f4c0creys6"
 
-[node name="OnDeathGiveXPToKiller" type="Node" parent="."]
+[node name="EntityData" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="EntityDeath" type="Node" parent="EntityData" node_paths=PackedStringArray("entity", "entity_stats_manager")]
+script = ExtResource("2_hr5iw")
+entity = NodePath("../..")
+entity_stats_manager = NodePath("../../EntityStatsManager")
+metadata/_custom_type_script = "uid://c1ku7g5chg0bj"
+
+[node name="OnDeathGiveXPToKiller" type="Node" parent="EntityData" node_paths=PackedStringArray("entity_stats_manager", "entity")]
 script = ExtResource("2_8bp4v")
-xp_to_give_to_killer = 25
+entity_stats_manager = NodePath("../../EntityStatsManager")
+entity = NodePath("../..")
+
+[node name="EntityHealthBar" parent="." node_paths=PackedStringArray("entity_stats_manager") instance=ExtResource("3_8bp4v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31438, 0)
+texture = SubResource("ViewportTexture_8bp4v")
+entity_stats_manager = NodePath("../EntityStatsManager")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.643499, 0)
