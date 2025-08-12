@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://v56u8wmc5o2t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vt3mh"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vt3mh"]
+radius = 0.269275
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pu1kw"]
+radius = 0.272419
+
+[node name="FireballInstance" type="StaticBody3D"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
+radius = 0.269815
+material = SubResource("StandardMaterial3D_vt3mh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_vt3mh")
+disabled = true
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_pu1kw")

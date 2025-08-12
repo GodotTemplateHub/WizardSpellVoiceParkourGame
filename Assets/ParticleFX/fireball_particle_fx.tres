@@ -1,0 +1,25 @@
+[gd_resource type="ParticleProcessMaterial" format=3 uid="uid://bglbdrh2ug0yl"]
+
+[resource]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+gravity = Vector3(0, -9.8, 0)
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("id_1")
+color = Color(1, 0.4, 0, 1)
+color_ramp = SubResource("id_2")
+emission_curve = SubResource("id_3")
+
+[sub_resource type="Curve" id="id_1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+
+[sub_resource type="Gradient" id="id_2"]
+colors = PackedColorArray(1, 0.8, 0, 1, 1, 0.4, 0, 1, 1, 0, 0, 0.8, 0.2, 0, 0, 0)
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+
+[sub_resource type="Curve" id="id_3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

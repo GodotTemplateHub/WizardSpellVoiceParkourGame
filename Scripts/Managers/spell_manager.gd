@@ -1,130 +1,121 @@
-extends Node
+extends Node3D
 class_name SpellManager
 
 @export var current_spell: Spell
-@export var fire_input_action: String = "fire"  # Input map action name
+var current_spell_index: int = 0
+var spells: Array = []  # Cache spells array
 
-var owner_player  # Reference to the player who owns this spell manager
-var all_players: Array = []  # Array of all players in the game
-var selected_target  # Currently selected target for spells
-
-signal spell_cast(spell: Spell, caster, target)
-signal spell_failed(spell: Spell, reason: String)
-signal target_selected(target)
+signal spell_added(spell: Spell)
+signal spell_removed(spell: Spell)
+signal spell_index_changed(index: int)
+signal spell_cast_attempted(spell: Spell, success: bool)
 
 func _ready():
-	# Get reference to owner (assumes this is a child of a player)
-	owner_player = get_parent()
+	update_spells_cache()
 
 func _input(event):
-	if event.is_action_pressed(fire_input_action):
-		attempt_cast_spell()
+	if event.is_pressed():
+		if spells.size() > 0:
+			# Handle fire input
+			if event.is_action_pressed("fire"):
+				attempt_cast_current_spell()
+			
+			# Handle spell cycling
+			elif event.is_action_pressed("next_spell"):
+				cycle_spell(1)
+			elif event.is_action_pressed("prev_spell"):
+				cycle_spell(-1)
+
+func cycle_spell(direction: int):
+	var spells = get_all_spells()
+	if spells.size() <= 1:
+		return
+	
+	var new_index = current_spell_index + direction
+	
+	# Wrap around
+	if new_index >= spells.size():
+		new_index = 0
+	elif new_index < 0:
+		new_index = spells.size() - 1
+	
+	set_current_spell_index(new_index)
+	print("Switched to spell: " + current_spell.spell_name if current_spell else "None")
+
+func attempt_cast_current_spell():
+	if not current_spell:
+		print("No spell selected")
+		spell_cast_attempted.emit(null, false)
+		return
+	
+	# Get owner player (assuming SpellManager is child of player)
+	var caster = get_parent()
+	if not caster:
+		print("No caster found")
+		spell_cast_attempted.emit(current_spell, false)
+		return
+	
+	# Check conditions and cast
+	var success = current_spell.start_cast(caster, null)  # No target for now
+	spell_cast_attempted.emit(current_spell, success)
+	
+	if success:
+		print("Cast " + current_spell.spell_name)
+	else:
+		print("Failed to cast " + current_spell.spell_name)
+
+func add_spell(spell: Spell):
+	if spell:
+		add_child(spell)
+		update_spells_cache()
+		update_current_spell()
+		spell_added.emit(spell)
+
+func remove_spell(spell: Spell):
+	if spell and spell.get_parent() == self:
+		if current_spell == spell:
+			current_spell = null
+		remove_child(spell)
+		update_spells_cache()
+		clamp_spell_index()
+		update_current_spell()
+		spell_removed.emit(spell)
+
+func update_spells_cache():
+	spells = []
+	for child in get_children():
+		if child is Spell:
+			spells.append(child)
+
+func get_all_spells() -> Array:
+	return spells
+
+func get_current_spell() -> Spell:
+	return current_spell
 
 func set_current_spell(spell: Spell):
 	current_spell = spell
-	
-	# Clear target when switching spells
-	selected_target = null
-	
-	# Auto-select target for SELF spells
-	if spell and spell.target_type == Spell.TargetType.SELF:
-		selected_target = owner_player
+	# Update index to match the spell
+	var spells = get_all_spells()
+	current_spell_index = spells.find(spell)
 
-func attempt_cast_spell():
-	if not current_spell:
-		spell_failed.emit(null, "No spell selected")
-		return
-	
-	# Handle targeting
-	var target = get_spell_target()
-	
-	# Attempt to cast the spell
-	if current_spell.cast(owner_player, target):
-		spell_cast.emit(current_spell, owner_player, target)
+func set_current_spell_index(index: int):
+	var spells = get_all_spells()
+	if spells.size() > 0:
+		current_spell_index = clamp(index, 0, spells.size() - 1)
+		update_current_spell()
+		spell_index_changed.emit(current_spell_index)
+
+func update_current_spell():
+	var spells = get_all_spells()
+	if spells.size() > 0 and current_spell_index < spells.size():
+		current_spell = spells[current_spell_index]
 	else:
-		var reason = get_cast_failure_reason()
-		spell_failed.emit(current_spell, reason)
+		current_spell = null
 
-func get_spell_target():
-	if not current_spell:
-		return null
-	
-	match current_spell.target_type:
-		Spell.TargetType.SELF:
-			return owner_player
-		Spell.TargetType.NONE:
-			return null
-		_:
-			# For targeted spells, use selected_target or auto-target
-			if selected_target:
-				return selected_target
-			else:
-				# Auto-select first valid target if none selected
-				var valid_targets = current_spell.get_valid_targets(owner_player, all_players)
-				if valid_targets.size() > 0:
-					return valid_targets[0]
-	
-	return null
-
-func get_cast_failure_reason() -> String:
-	if not current_spell:
-		return "No spell selected"
-	
-	if current_spell.is_on_cooldown:
-		return "Spell is on cooldown"
-	
-	if current_spell.target_type != Spell.TargetType.SELF and current_spell.target_type != Spell.TargetType.NONE:
-		if not selected_target:
-			return "No target selected"
-	
-	if owner_player.has_method("get_mana") and owner_player.get_mana() < current_spell.mana_cost:
-		return "Not enough mana"
-	
-	return "Cannot cast spell"
-
-func set_target(target):
-	if not current_spell:
-		return false
-	
-	# Check if target is valid for current spell
-	var valid_targets = current_spell.get_valid_targets(owner_player, all_players)
-	if target in valid_targets:
-		selected_target = target
-		target_selected.emit(target)
-		return true
-	
-	return false
-
-func get_valid_targets() -> Array:
-	if not current_spell:
-		return []
-	
-	return current_spell.get_valid_targets(owner_player, all_players)
-
-func update_all_players(players: Array):
-	all_players = players
-
-# Utility functions
-func has_spell() -> bool:
-	return current_spell != null
-
-func can_cast_current_spell() -> bool:
-	if not current_spell:
-		return false
-	
-	var target = get_spell_target()
-	return current_spell.can_cast(owner_player, target)
-
-func get_current_spell_info() -> Dictionary:
-	if not current_spell:
-		return {}
-	
-	return {
-		"name": current_spell.spell_name,
-		"description": current_spell.description,
-		"mana_cost": current_spell.mana_cost,
-		"cooldown": current_spell.cooldown_time,
-		"target_type": current_spell.target_type,
-		"on_cooldown": current_spell.is_on_cooldown,
-		"cooldown_remaining": current_spell.cooldown_timer if current_spell.is_on_cooldown else 0.0
-	}
+func clamp_spell_index():
+	var spells = get_all_spells()
+	if spells.size() > 0:
+		current_spell_index = clamp(current_spell_index, 0, spells.size() - 1)
+	else:
+		current_spell_index = 0

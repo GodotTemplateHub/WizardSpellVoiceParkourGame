@@ -1,0 +1,94 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3ow8ri68wi04"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qu1vk"]
+bg_color = Color(0.0475577, 0.0475576, 0.0475576, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmgd7"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.863219, 0.82442, 1.54018e-06, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_qu1vk"]
+font_color = Color(0.59007, 0.763194, 0.575165, 1)
+outline_size = 3
+outline_color = Color(0.215902, 0.215902, 0.215902, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rmgd7"]
+font_size = 21
+font_color = Color(0, 1, 1, 1)
+
+[node name="SpellUIContainer" type="Control"]
+custom_minimum_size = Vector2(110, 103)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="PanelBG" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qu1vk")
+
+[node name="SelectedPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rmgd7")
+
+[node name="SpellTextureIcon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = 32.0
+offset_right = -11.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="SpellNameLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -27.0
+offset_right = -3.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "spell name"
+label_settings = SubResource("LabelSettings_qu1vk")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpellManaLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 110.0
+offset_bottom = 28.0
+text = "40"
+label_settings = SubResource("LabelSettings_rmgd7")
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4t8eysaxec8q"]
+
+[ext_resource type="Script" uid="uid://cceb62px88jvn" path="res://Scripts/System/Spells/fireball_spell.gd" id="1_d4gre"]
+[ext_resource type="PackedScene" uid="uid://v56u8wmc5o2t" path="res://Scripts/System/Spells/PREFABS/Fireball/FireballInstance.tscn" id="2_1wfjm"]
+
+[node name="FireballSpell" type="Node3D"]
+script = ExtResource("1_d4gre")
+projectile_prefab = ExtResource("2_1wfjm")
+projectile_speed = 30.0
+damage = 1.0
+spell_name = "Fireball"
+description = "Shoot a ball of fire"
+target_type = 1

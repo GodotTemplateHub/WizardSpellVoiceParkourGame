@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dgc18acbwmq5r" path="res://Scripts/System/Networking/PlayerSpawner.gd" id="1_gojf1"]
 [ext_resource type="PackedScene" uid="uid://tv4ar5fv1s6e" path="res://Scenes/player.tscn" id="2_fehjn"]
-[ext_resource type="PackedScene" uid="uid://d3mqoqtwjal42" path="res://Scenes/Interactions/base_interaction.tscn" id="3_6phgx"]
 [ext_resource type="Script" uid="uid://cbd0y0kx8fog3" path="res://Scripts/arena_manager.gd" id="4_81xng"]
 [ext_resource type="Script" uid="uid://k2gcykkt85jg" path="res://Scripts/Managers/game_manager.gd" id="4_wqkje"]
 [ext_resource type="Script" uid="uid://juapy8e60yaw" path="res://Scripts/Managers/global_game_ui_manager.gd" id="5_0f350"]
 [ext_resource type="FontFile" uid="uid://cd2oroja8to8p" path="res://Assets/UI/Fonts/Dead Font Walking.otf" id="6_8c0lf"]
 [ext_resource type="FontFile" uid="uid://cilkvwb1gxv4u" path="res://Assets/Theme/Fonts/Hermit-Regular.otf" id="6_754fn"]
+[ext_resource type="PackedScene" uid="uid://btk5a804aldun" path="res://Scenes/Entities/dummy_entity.tscn" id="8_754fn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6phgx"]
 
@@ -117,15 +117,6 @@ size = Vector3(39.3157, 0.166, 20)
 
 [node name="GlobalUI" type="CanvasLayer" parent="."]
 
-[node name="BaseInteraction" parent="." instance=ExtResource("3_6phgx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, -3.32939)
-
-[node name="BaseInteraction2" parent="." instance=ExtResource("3_6phgx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, -1.14177)
-
-[node name="BaseInteraction3" parent="." instance=ExtResource("3_6phgx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.27621, 2.01123, 1.41759)
-
 [node name="Map" type="CSGCombiner3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Map"]
@@ -211,3 +202,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9089, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.238268, 3.26752, 0)
 shape = SubResource("BoxShape3D_6phgx")
 debug_color = Color(1, 0.224294, 0.77089, 0.42)
+
+[node name="DummyEntity" parent="." instance=ExtResource("8_754fn")]
+transform = Transform3D(0.743343, 0, -0.66891, 0, 1, 0, 0.66891, 0, 0.743343, 7.99027, 2.62105, -7.54396)
+
+[node name="DummyEntity2" parent="." instance=ExtResource("8_754fn")]
+transform = Transform3D(0.998614, 0, 0.0526322, 0, 1, 0, -0.0526322, 0, 0.998614, 5.36071, 2.62105, -8.35568)
+
+[node name="DummyEntity3" parent="." instance=ExtResource("8_754fn")]
+transform = Transform3D(0.0526322, 0, -0.998614, 0, 1, 0, 0.998614, 0, 0.0526322, 8.61878, 2.62105, -4.31631)

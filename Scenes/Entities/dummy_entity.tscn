@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://btk5a804aldun"]
+
+[ext_resource type="Script" uid="uid://b88f4c0creys6" path="res://Scripts/Managers/stats_manager.gd" id="1_rja1r"]
+[ext_resource type="Script" uid="uid://dcjmglx667i2" path="res://Scripts/System/Entity/entity_give_xp_to_killer.gd" id="2_8bp4v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oqgf2"]
+albedo_color = Color(0.727895, 0.976407, 0.478035, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qxfql"]
+albedo_color = Color(0.847909, 0.85074, 0.517443, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqgf2"]
+size = Vector3(1, 2.33289, 1)
+
+[node name="DummyEntity" type="StaticBody3D"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="EntityStatsManager" type="Node" parent="."]
+script = ExtResource("1_rja1r")
+max_health = 10.0
+max_mana = 10.0
+speed = 1.0
+base_damage = 1.0
+metadata/_custom_type_script = "uid://b88f4c0creys6"
+
+[node name="OnDeathGiveXPToKiller" type="Node" parent="."]
+script = ExtResource("2_8bp4v")
+xp_to_give_to_killer = 25
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.643499, 0)
+size = Vector3(1, 1.78711, 1)
+material = SubResource("StandardMaterial3D_oqgf2")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.541662, 0)
+material = SubResource("StandardMaterial3D_qxfql")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.330874, 0)
+shape = SubResource("BoxShape3D_oqgf2")
